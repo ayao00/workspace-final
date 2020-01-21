@@ -1,4 +1,6 @@
 #include "networking.h"
+#include "board.h"
+#include "play.h"
 
 void process(char *s);
 void subserver(int from_client);
@@ -34,5 +36,27 @@ void subserver(int client_socket) {
 }
 
 void process(char * s) {
-  s = "switched";
+  int x,y,j,i;
+  int turns = 0;
+  sscanf(s[0],"%d", &x);
+  scanf(s[1],"%d", &y);
+  j = x - 1;
+  i = currentgame->rows - y;
+  if(!strncmp(s[2],"u",1)){
+    if (currentgame->board[i][j].revealed){
+      //bruh
+      printf("uncover the damn thing");
+      uncoverCheat(currentgame, i, j);
+    }else{
+      uncoverSpace(currentgame, i, j);
+    }
+  }
+  else{
+    flagSpace(currentgame, i, j);
+  }
+  turns ++;
+  printBoard(currentgame);
+  if (checkDone(currentgame) == 1){
+    break;
+  }
 }
