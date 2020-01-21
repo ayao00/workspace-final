@@ -25,3 +25,4 @@ void showAns(struct Minesweeper * gameboard);
 int checkDone(struct Minesweeper *gameboard);
 struct space createSpace();
 void freeBoard(struct Minesweeper *gameboard);
+char * wordBoard(struct Minesweeper *gameboard);

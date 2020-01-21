@@ -66,7 +66,7 @@ void subserver(int client_socket, struct Minesweeper *currentboard) {
 
     printf("[subserver %d] received: [%s]\n", getpid(), buffer);
     process(buffer, currentboard);
-    write(client_socket, "switched", sizeof(buffer));
+    write(client_socket,wordBoard(currentboard), sizeof(buffer));
   }//end read loop
   close(client_socket);
   exit(0);
@@ -96,4 +96,57 @@ void process(char * s, struct Minesweeper *currentgame) {
   }
   turns ++;
   printBoard(currentgame);
+}
+
+char * wordBoard(struct Minesweeper *gameboard){
+  char * ans;
+  char append[10];
+  struct space ** board = gameboard->board;
+  strcat(ans,"DISPLAYING BOARD...\n");
+  int i, j;
+  for (i = 0; i < gameboard->rows; i ++){
+    strcat(ans,"\x1b[30m\x1b[47m");
+    sprintf(append, "%d",gameboard->rows-i);
+    strcat(ans,append);
+    strcat(ans,"\x1b[0m");
+    for (j = 0; j < gameboard->columns; j ++){
+      printf("[ ");
+      //if the space is not yet revealed, print '_'.
+      if (!board[i][j].revealed){
+        if (board[i][j].flagged){
+          strcat(ans,"F");
+        }
+        else{
+          strcat(ans,"_");
+        }
+      }
+      //else, if the space is indeed revealed:
+      else{
+        //if the space is a mine, print *.
+        if (board[i][j].mine == -1){
+          strcat(ans,"\033[1;31m");
+          strcat(ans,"*");
+          strcat(ans,"\033[0m");
+        }
+        //if the space is just a normal space, print the number of neighboring mines.
+        //neighborcount will be calculated later.
+        else{
+          printf("%d", board[i][j].neighborcount);
+        }
+      }
+      strcat(ans," ]");
+    }
+    strcat(ans,"\n");
+  }
+  strcat(ans, "\x1b[30m\x1b[47m");
+  strcat(ans, "\t  ");
+  for (j = 1; j <= gameboard->columns; j ++){
+    sprintf(append,"%d",j);
+    strcat(ans, append);
+    if (j < 9)
+      strcat(ans," ");
+  }
+  strcat(ans,"\x1b[0m");
+  strcat(ans,"\n");
+  return ans;
 }
