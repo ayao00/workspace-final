@@ -9,3 +9,4 @@ struct player makePlayer(char * name);
 struct player findPlayer(char * name);
 void printPlayer(struct player user);
 void addPlayer(struct player user);
+char ** parse_args(char * line, char * separator);

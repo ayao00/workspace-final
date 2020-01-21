@@ -32,11 +32,11 @@ int main(int argc, char **argv) {
 
   srand(time(NULL));
   printf("Have you played before (y/n)? ");
-  char ans[5];
+  char ans[100];
   fgets(ans,sizeof(ans), stdin);
 
   struct player playerOne;
-  char username[20];
+  char username[100];
   if(!strncmp(ans,"y",1)){
     printf("What is your username? ");
     fgets(username, 256, stdin);
@@ -91,7 +91,9 @@ int main(int argc, char **argv) {
      *strchr(current.choice, '\n') = 0;
 
     strcpy(buffer, current.x);
+    strcat(buffer,",");
     strcat(buffer, current.y);
+    strcat(buffer,",");
     strcat(buffer, current.choice);
     write(server_socket, buffer, sizeof(buffer));
     read(server_socket, buffer, sizeof(buffer));

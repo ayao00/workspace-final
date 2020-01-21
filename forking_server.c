@@ -75,11 +75,14 @@ void subserver(int client_socket, struct Minesweeper *currentboard) {
 void process(char * s, struct Minesweeper *currentgame) {
   int x,y,j,i;
   int turns = 0;
-  sscanf(&s[0],"%d", &x);
-  sscanf(&s[1],"%d", &y);
+  char ** coord = parse_args(s, ",");
+  sscanf(coord[0],"%d", &x);
+  sscanf(coord[1],"%d", &y);
   j = x - 1;
   i = currentgame->rows - y;
-  if(!strncmp(&s[2],"u",1)){
+  printf("%d\n",i);
+  printf("%d\n",j);
+  if(!strncmp(coord[2],"u",1)){
     if (currentgame->board[i][j].revealed){
       //bruh
       printf("uncover the damn thing");
