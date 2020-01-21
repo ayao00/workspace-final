@@ -17,8 +17,8 @@ select: sclient sserver
 sserver: select_server.o networking.o
 	gcc -o server select_server.o networking.o
 
-fserver: forking_server.o networking.o
-	gcc -o server forking_server.o networking.o
+fserver: forking_server.o networking.o board.o play.o
+	gcc -o server forking_server.o networking.o board.o play.o
 
 sclient: select_client.o networking.o
 	gcc -o client select_client.o networking.o
@@ -35,7 +35,7 @@ client.o: client.c networking.h board.h play.h
 select_server.o: select_server.c networking.h
 	gcc -c select_server.c
 
-forking_server.o: forking_server.c networking.h
+forking_server.o: forking_server.c networking.h board.h play.h
 	gcc -c forking_server.c
 
 networking.o: networking.c networking.h
