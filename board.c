@@ -14,6 +14,7 @@
 #include "board.h"
 
 void placeMines(struct Minesweeper *gameboard){
+  srand(time(NULL));
   struct space ** board = gameboard->board;
   int minesremaining = gameboard->mines;
   int randr;
